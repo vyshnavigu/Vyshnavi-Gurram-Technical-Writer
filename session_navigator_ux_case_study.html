@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>Session Navigator UX Case Study – Vyshnavi Gurram</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --blue-50: #ebf4fd;
+        --blue-100: #c2defa;
+        --blue-200: #97c6f6;
+        --blue-500: #2383d6;
+        --blue-600: #1868b0;
+        --blue-700: #0f4f8a;
+        --slate-50: #f7f9fc;
+        --slate-100: #eef2f8;
+        --slate-200: #dde5f0;
+        --slate-600: #5e7290;
+        --slate-700: #3d506a;
+        --slate-800: #253347;
+        --slate-900: #111c2b;
+        --amber-50: #fdf4e7;
+        --amber-700: #8a5d12;
+        --green-50: #ebf7f0;
+        --green-700: #1b6b42;
+        --green-200: #b2ddca;
+        --red-50: #fef0f0;
+        --red-700: #952c2c;
+        --white: #fff;
+        --border: #dde5f0;
+        --text-primary: #111c2b;
+        --text-secondary: #3d506a;
+        --text-muted: #5e7290;
+        --accent: #2383d6;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--white);
+        color: var(--text-primary);
+        line-height: 1.7;
+        font-size: 16px;
+        -webkit-font-smoothing: antialiased;
+      }
+      .page-wrap {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        min-height: 100vh;
+      }
+      .sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        background: var(--slate-50);
+        border-right: 1px solid var(--border);
+        padding: 2rem 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+      }
+      .sidebar-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      .sidebar-back:hover {
+        color: var(--accent);
+      }
+      .sidebar-back svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .sidebar-section {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin: 1rem 0 0.4rem;
+        padding-left: 0.5rem;
+      }
+      .sidebar a {
+        display: block;
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 6px;
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+      .sidebar a:hover {
+        background: var(--blue-50);
+        color: var(--accent);
+      }
+      .sidebar a.active {
+        background: var(--blue-50);
+        color: var(--accent);
+        font-weight: 500;
+      }
+      .content {
+        padding: 3rem 3.5rem;
+        max-width: 920px;
+      }
+      .doc-header {
+        margin-bottom: 2.5rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .doc-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 999px;
+        margin-bottom: 1rem;
+      }
+      .badge-ux {
+        background: var(--red-50);
+        color: var(--red-700);
+        border: 1px solid #f5c0c0;
+      }
+      .doc-title {
+        font-family: "DM Serif Display", serif;
+        font-size: 2.2rem;
+        letter-spacing: -0.03em;
+        color: var(--text-primary);
+        line-height: 1.15;
+        margin-bottom: 0.6rem;
+      }
+      .doc-subtitle {
+        font-size: 1rem;
+        color: var(--text-muted);
+        margin: 0.25rem 0 0.5rem;
+      }
+      .doc-author {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+      }
+      .doc-author strong {
+        color: var(--text-secondary);
+      }
+      h2 {
+        font-family: "DM Serif Display", serif;
+        font-size: 1.6rem;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+        margin: 3rem 0 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border);
+      }
+      h3 {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 2rem 0 0.6rem;
+      }
+      h4 {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        margin: 1.5rem 0 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+      }
+      p {
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        line-height: 1.75;
+      }
+      ul,
+      ol {
+        color: var(--text-secondary);
+        padding-left: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      li {
+        margin-bottom: 0.4rem;
+        line-height: 1.65;
+      }
+      strong {
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+      em {
+        color: var(--text-secondary);
+      }
+      .section-anchor {
+        display: block;
+        position: relative;
+        top: -80px;
+        visibility: hidden;
+      }
+
+      /* Content cards */
+      .info-box {
+        background: var(--slate-50);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.25rem 1.5rem;
+        margin: 1.25rem 0;
+      }
+      .info-box h4 {
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+      }
+      .feature-card {
+        background: var(--slate-50);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 1.25rem 1.5rem;
+        margin: 1.25rem 0;
+      }
+      .feature-card h3 {
+        margin-top: 0;
+      }
+      .microcopy {
+        background: var(--amber-50);
+        border-left: 3px solid #f4b400;
+        padding: 0.9rem 1rem;
+        margin-top: 0.85rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        color: #704a10;
+      }
+      .microcopy strong {
+        color: var(--amber-700);
+      }
+      .example {
+        background: #1a2233;
+        border-radius: 10px;
+        margin: 0.75rem 0 1rem;
+        padding: 1rem 1.25rem;
+        color: #cdd9ec;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.82rem;
+        line-height: 1.7;
+        white-space: pre-line;
+        overflow-x: auto;
+      }
+      code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.82em;
+        background: var(--slate-100);
+        border: 1px solid var(--border);
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: var(--slate-800);
+      }
+
+      /* Callouts */
+      .callout {
+        border-radius: 8px;
+        padding: 1rem 1.25rem;
+        margin: 1.25rem 0;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        background: var(--blue-50);
+        border-left: 3px solid var(--blue-500);
+      }
+      .callout svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        margin-top: 2px;
+        fill: none;
+        stroke: var(--blue-500);
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .callout-body {
+        flex: 1;
+      }
+      .callout-title {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        color: var(--blue-700);
+      }
+      .callout-body p {
+        margin: 0;
+        font-size: 0.875rem;
+        line-height: 1.6;
+        color: var(--blue-700);
+      }
+
+      /* Wireframes */
+      .wireframe-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin: 1.5rem 0 2rem;
+      }
+      .wireframe {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(17, 28, 43, 0.05);
+      }
+      .wireframe-header {
+        background: var(--slate-100);
+        padding: 0.65rem 1rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        border-bottom: 1px solid var(--border);
+      }
+      .wireframe-body {
+        padding: 1rem;
+        background: var(--white);
+      }
+      .mini-app {
+        display: grid;
+        grid-template-columns: 170px 1fr;
+        min-height: 280px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        background: var(--white);
+      }
+      .mini-sidebar {
+        background: var(--slate-50);
+        border-right: 1px solid var(--border);
+        padding: 0.8rem;
+      }
+      .mini-main {
+        padding: 0.8rem;
+        background: var(--white);
+      }
+      .mini-sidebar h4,
+      .mini-main h4 {
+        margin: 0 0 0.65rem;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+      }
+      .outline-item,
+      .result-item,
+      .saved-item,
+      .chat-block {
+        font-size: 0.78rem;
+        padding: 0.55rem 0.65rem;
+        margin-bottom: 0.5rem;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--white);
+        color: var(--text-secondary);
+        line-height: 1.5;
+      }
+      .outline-item.active {
+        border-color: var(--blue-200);
+        background: var(--blue-50);
+        color: var(--blue-700);
+        font-weight: 600;
+      }
+      .saved-item {
+        background: var(--amber-50);
+        border-color: #f0d49a;
+        color: var(--amber-700);
+      }
+      .chat-block {
+        background: var(--slate-50);
+      }
+      .chat-block strong {
+        font-size: 0.76rem;
+      }
+      .jump-note {
+        display: inline-block;
+        margin: 0.25rem 0 0.8rem;
+        padding: 0.35rem 0.65rem;
+        border-radius: 999px;
+        background: var(--green-50);
+        border: 1px solid var(--green-200);
+        font-size: 0.72rem;
+        color: var(--green-700);
+      }
+      .search-box {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.65rem 0.75rem;
+        margin-bottom: 0.75rem;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        background: var(--slate-50);
+      }
+      .footer {
+        margin-top: 3rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size: 0.875rem;
+      }
+
+      @media (max-width: 900px) {
+        .wireframe-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 768px) {
+        .page-wrap {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          display: none;
+        }
+        .content {
+          padding: 2rem 1.25rem;
+        }
+        .doc-title {
+          font-size: 1.7rem;
+        }
+        .mini-app {
+          grid-template-columns: 1fr;
+        }
+        .mini-sidebar {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-wrap">
+      <nav class="sidebar">
+        <a href="index.html" class="sidebar-back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" /></svg>
+          Back to portfolio
+        </a>
+        <div class="sidebar-section">Contents</div>
+        <a href="#overview">Overview</a>
+        <a href="#problem">The Problem</a>
+        <a href="#users">Who This Helps</a>
+        <a href="#goal">Design Goal</a>
+        <a href="#solution">Proposed Solution</a>
+        <div class="sidebar-section">Features</div>
+        <a href="#features">Feature Details</a>
+        <a href="#importance">Why This Matters</a>
+        <a href="#principles">UX Writing Principles</a>
+        <a href="#tone">Voice and Tone</a>
+        <a href="#impact">Potential Impact</a>
+        <a href="#metrics">Success Metrics</a>
+      </nav>
+
+      <main class="content">
+        <div class="doc-header">
+          <div class="doc-badge badge-ux">UX Writing Case Study</div>
+          <h1 class="doc-title">
+            Designing a Session Navigator for AI Chat Interfaces
+          </h1>
+          <p class="doc-subtitle">
+            Improving navigation, retrieval, and usability in long AI
+            conversations.
+          </p>
+          <p class="doc-author">
+            by <strong>Vyshnavi Gurram</strong> – Technical Writer / UX Writer
+          </p>
+        </div>
+
+        <span class="section-anchor" id="overview"></span>
+        <h2>Overview</h2>
+        <p>
+          AI platforms like ChatGPT and Claude are increasingly used for deep,
+          long-running work: drafting code, planning projects, researching
+          complex topics, and iterating on large documents. However, these
+          interfaces are designed for short exchanges, not for navigation across
+          long threads.
+        </p>
+        <p>
+          This project explores how a session navigator could help users quickly
+          move through previous prompts and responses without relying on endless
+          scrolling.
+        </p>
+        <p>
+          The concept is especially useful for power users who treat AI tools as
+          workspaces rather than simple chat windows.
+        </p>
+
+        <span class="section-anchor" id="problem"></span>
+        <h2>The Problem</h2>
+        <p>
+          When users work on large projects in AI chat interfaces, conversations
+          can quickly become long and difficult to manage.
+        </p>
+        <div class="info-box">
+          <h4>User pain points</h4>
+          <ul>
+            <li>Difficulty finding earlier prompts and answers</li>
+            <li>High cognitive load when scanning long chats</li>
+            <li>
+              Repeated prompting because previous content is hard to retrieve
+            </li>
+            <li>Lack of structure for project-based conversations</li>
+          </ul>
+        </div>
+        <p>
+          For example, a user may ask for problem statements, competitor
+          analysis, UX flows, and technical recommendations in one long chat.
+          Later, they may want one specific answer, but have no quick way to
+          locate it.
+        </p>
+
+        <span class="section-anchor" id="users"></span>
+        <h2>Who This Helps</h2>
+        <div class="info-box">
+          <h4>Primary users</h4>
+          <ul>
+            <li>
+              <strong>Writers and content strategists</strong> who use AI for
+              long drafting and revision sessions
+            </li>
+            <li>
+              <strong>Developers and product teams</strong> who need to revisit
+              earlier technical decisions
+            </li>
+            <li>
+              <strong>Researchers and planners</strong> who build projects over
+              many prompts in one thread
+            </li>
+          </ul>
+        </div>
+        <p>
+          These users do not just need better answers. They need better
+          wayfinding within the conversation they already built.
+        </p>
+
+        <span class="section-anchor" id="goal"></span>
+        <h2>Design Goal</h2>
+        <p>Create a lightweight session navigator that helps users:</p>
+        <ul>
+          <li>Locate earlier prompts and responses quickly</li>
+          <li>Navigate long project-based chats with less effort</li>
+          <li>Reduce frustration and repeated work</li>
+          <li>Improve confidence in using AI for complex tasks</li>
+        </ul>
+
+        <span class="section-anchor" id="solution"></span>
+        <h2>Proposed Solution</h2>
+        <p>
+          I proposed a collapsible sidebar that indexes all user prompts in a
+          conversation. This sidebar acts as a navigation panel that allows
+          users to jump directly to earlier parts of the chat.
+        </p>
+
+        <div class="wireframe-grid">
+          <div class="wireframe">
+            <div class="wireframe-header">
+              Wireframe 1 · Session Navigator Sidebar
+            </div>
+            <div class="wireframe-body">
+              <div class="mini-app">
+                <div class="mini-sidebar">
+                  <h4>Conversation outline</h4>
+                  <div class="outline-item">
+                    1. Define food delivery problem
+                  </div>
+                  <div class="outline-item">
+                    2. Analyze existing delivery apps
+                  </div>
+                  <div class="outline-item active">
+                    3. Multi-store ordering UX flow
+                  </div>
+                  <div class="outline-item">4. Unified cart design</div>
+                  <div class="outline-item">
+                    5. Route preview and delivery timing
+                  </div>
+                  <h4 style="margin-top: 1rem">Saved insights</h4>
+                  <div class="saved-item">★ Pricing model recommendation</div>
+                  <div class="saved-item">★ Final UX flow</div>
+                </div>
+                <div class="mini-main">
+                  <h4>Selected section</h4>
+                  <span class="jump-note"
+                    >Jumped to prompt 3. Context preserved.</span
+                  >
+                  <div class="chat-block">
+                    <strong>User:</strong> Help me design the UX flow for a food
+                    delivery app that lets users order from multiple stores in
+                    one trip.
+                  </div>
+                  <div class="chat-block">
+                    <strong>Assistant:</strong> Start by showing nearby stores,
+                    then let users add items from multiple places into one
+                    unified cart.
+                  </div>
+                  <div class="chat-block">
+                    <strong>Assistant:</strong> Add a route preview so users can
+                    see the pickup order, delivery timing, and how the app
+                    combines the order into one trip.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wireframe">
+            <div class="wireframe-header">
+              Wireframe 2 · Search Within a Conversation
+            </div>
+            <div class="wireframe-body">
+              <div class="mini-app" style="grid-template-columns: 1fr">
+                <div class="mini-main">
+                  <h4>Search this conversation</h4>
+                  <div class="search-box">Route preview</div>
+                  <div class="result-item">
+                    <strong>Prompt 12</strong><br />Route preview for
+                    multi-store delivery
+                  </div>
+                  <div class="result-item">
+                    <strong>Prompt 19</strong><br />Pickup order and delivery
+                    timing
+                  </div>
+                  <div class="result-item">
+                    <strong>Prompt 27</strong><br />Unified cart and route
+                    summary
+                  </div>
+                  <div class="microcopy">
+                    <strong>Microcopy:</strong> Search this conversation
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <span class="section-anchor" id="features"></span>
+        <h2>Feature Details</h2>
+
+        <div class="feature-card">
+          <h3>Feature 1: Indexed Prompt List</h3>
+          <p>
+            Each user prompt appears in a numbered list so users can move
+            between parts of the conversation more easily.
+          </p>
+          <div class="example">
+            Conversation outline 1. Define problem statement 2. Competitor
+            analysis 3. UX flow 4. API architecture 5. Documentation structure
+          </div>
+          <div class="microcopy">
+            <strong>Microcopy:</strong> Conversation outline
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <h3>Feature 2: Topic Grouping</h3>
+          <p>
+            Prompts can be grouped into themes such as research, design, and
+            technical planning to improve scanning.
+          </p>
+          <div class="example">
+            Project: Delivery App Research • Problem definition • Market
+            analysis Design • User flow • Pricing strategy Technical • Database
+            schema • API endpoints
+          </div>
+          <div class="microcopy">
+            <strong>Microcopy:</strong> Your conversation has been organized
+            into topics.
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <h3>Feature 3: Saved Insights</h3>
+          <p>
+            Users can bookmark important answers so they do not need to scroll
+            through the entire thread later.
+          </p>
+          <div class="example">
+            Saved insights ★ Pricing model recommendation ★ API structure ★
+            Final UX flow
+          </div>
+          <div class="microcopy">
+            <strong>Microcopy:</strong> Saved to project highlights.
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <h3>Feature 4: Search Within a Conversation</h3>
+          <p>
+            A search field lets users retrieve earlier prompts and responses by
+            keyword.
+          </p>
+          <div class="example">
+            Search this conversation Route preview Results: Prompt 12 – Route
+            preview for multi-store delivery Prompt 19 – Pickup order and
+            delivery timing
+          </div>
+          <div class="microcopy">
+            <strong>Microcopy:</strong> Search this conversation
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <h3>Feature 5: Jump Confirmation</h3>
+          <p>
+            When a user jumps to an earlier prompt, the interface should confirm
+            the move and reassure the user that the conversation context is
+            still intact.
+          </p>
+          <div class="example">Jumped to prompt 3. Context preserved.</div>
+          <div class="microcopy">
+            <strong>Microcopy:</strong> Jumped to prompt 3. Context preserved.
+          </div>
+        </div>
+
+        <span class="section-anchor" id="importance"></span>
+        <h2>Why This Matters</h2>
+        <p>
+          As AI tools become part of daily knowledge work, users need more than
+          conversation. They need structure, navigation, and retrieval support.
+        </p>
+        <p>
+          This feature helps transform AI chat from a simple messaging interface
+          into a more usable project workspace.
+        </p>
+
+        <span class="section-anchor" id="principles"></span>
+        <h2>UX Writing Principles Applied</h2>
+        <ul>
+          <li><strong>Clarity:</strong> Labels are simple and direct.</li>
+          <li>
+            <strong>Discoverability:</strong> Important navigation elements are
+            visible and easy to find.
+          </li>
+          <li>
+            <strong>Cognitive ease:</strong> Grouping and indexing reduce mental
+            effort.
+          </li>
+          <li>
+            <strong>Workflow support:</strong> The design supports real
+            project-based user behavior.
+          </li>
+          <li>
+            <strong>Reassurance:</strong> Feedback such as “Context preserved”
+            reduces user anxiety after navigation.
+          </li>
+        </ul>
+
+        <span class="section-anchor" id="tone"></span>
+        <h2>Voice and Tone</h2>
+        <div class="info-box">
+          <p>
+            The voice for this feature should feel quietly helpful: clear, calm,
+            and efficient.
+          </p>
+          <ul>
+            <li>
+              Use direct labels such as
+              <strong>Conversation outline</strong> and
+              <strong>Search this conversation</strong>.
+            </li>
+            <li>
+              Avoid technical jargon such as <em>token limits</em> or
+              <em>context windows</em>.
+            </li>
+            <li>
+              Write confirmation and error messages that explain what happened
+              and what the user can do next.
+            </li>
+          </ul>
+        </div>
+
+        <span class="section-anchor" id="impact"></span>
+        <h2>Potential Impact</h2>
+        <ul>
+          <li>Faster retrieval of earlier content</li>
+          <li>Reduced repeated prompts</li>
+          <li>Better support for long-form collaboration with AI</li>
+          <li>Improved trust in AI as a work tool</li>
+        </ul>
+
+        <span class="section-anchor" id="metrics"></span>
+        <h2>Success Metrics</h2>
+        <ul>
+          <li>Reduce the time users spend searching for earlier answers</li>
+          <li>Reduce repeated prompts caused by poor retrieval</li>
+          <li>Increase confidence in using AI for long, project-based work</li>
+        </ul>
+
+        <span class="section-anchor" id="role"></span>
+      </main>
+    </div>
+
+    <script>
+      const anchors = document.querySelectorAll(".section-anchor");
+      const links = document.querySelectorAll('.sidebar a[href^="#"]');
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              links.forEach((l) => l.classList.remove("active"));
+              const a = document.querySelector(
+                `.sidebar a[href="#${e.target.id}"]`,
+              );
+              if (a) a.classList.add("active");
+            }
+          });
+        },
+        { rootMargin: "-10% 0px -80% 0px" },
+      );
+      anchors.forEach((a) => obs.observe(a));
+    </script>
+  </body>
+</html>
