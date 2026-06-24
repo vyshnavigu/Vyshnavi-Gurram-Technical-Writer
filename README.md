@@ -3,7 +3,7 @@
 Technical Writer specializing in API documentation, developer documentation, AI documentation, and user documentation.
 
 **Portfolio:** https://vyshnavi-gurram-technical-writer.vercel.app/
-**Email:** [vyshnavig28@gmail.com] (mailto:vyshnavig28@gmail.com)
+**Email:** vyshnavig28@gmail.com
 
 ## About
 
