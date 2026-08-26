@@ -79,11 +79,15 @@
         color: var(--text-primary);
         text-decoration: none;
         letter-spacing: -0.02em;
+        flex-shrink: 0;
       }
       .nav-links {
         display: flex;
-        gap: 2rem;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 1.75rem;
         list-style: none;
+        white-space: nowrap;
       }
       .nav-links a {
         font-size: 0.875rem;
@@ -95,6 +99,99 @@
       }
       .nav-links a:hover {
         color: var(--accent);
+      }
+
+      /* WORK DROPDOWN */
+      .nav-dropdown {
+        position: relative;
+      }
+
+      .nav-dropdown summary {
+        list-style: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 18px 0;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        user-select: none;
+        transition: color 0.2s;
+      }
+
+      .nav-dropdown summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .nav-dropdown summary::after {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-right: 1.5px solid currentColor;
+        border-bottom: 1.5px solid currentColor;
+        transform: rotate(45deg) translateY(-2px);
+        transition: transform 0.18s ease;
+      }
+
+      .nav-dropdown summary:hover,
+      .nav-dropdown summary:focus-visible,
+      .nav-dropdown[open] summary {
+        color: var(--accent);
+      }
+
+      .nav-dropdown summary:focus-visible {
+        outline: 2px solid var(--blue-200);
+        outline-offset: 4px;
+        border-radius: 4px;
+      }
+
+      .nav-dropdown[open] summary::after {
+        transform: rotate(225deg) translate(-1px, -1px);
+      }
+
+      .work-dropdown-menu {
+        position: absolute;
+        top: calc(100% - 3px);
+        right: 0;
+        width: 285px;
+        margin: 0;
+        padding: 8px;
+        list-style: none;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: 0 12px 32px rgba(17, 28, 43, 0.12);
+      }
+
+      .work-dropdown-menu li {
+        margin: 0;
+      }
+
+      .work-dropdown-menu a {
+        display: block;
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        line-height: 1.35;
+        color: var(--text-secondary);
+        white-space: normal;
+      }
+
+      .work-dropdown-menu a:hover,
+      .work-dropdown-menu a:focus-visible {
+        color: var(--blue-700);
+        background: var(--blue-50);
+      }
+
+      .work-dropdown-menu a:focus-visible {
+        outline: 2px solid var(--blue-200);
+        outline-offset: -2px;
+      }
+
+      .work-category {
+        scroll-margin-top: 85px;
       }
 
       /* SECTIONS */
@@ -747,7 +844,18 @@
       <a href="#hero" class="nav-logo">Vyshnavi Gurram</a>
       <ul class="nav-links">
         <li><a href="#skills">Skills</a></li>
-        <li><a href="#work">Work</a></li>
+        <li>
+          <details class="nav-dropdown">
+            <summary aria-label="Open work categories">Work</summary>
+            <ul class="work-dropdown-menu">
+              <li><a href="#work-api">API Documentation</a></li>
+              <li><a href="#work-conceptual">Conceptual Guides</a></li>
+              <li><a href="#work-deployment">Implementation &amp; Deployment Guides</a></li>
+              <li><a href="#work-ai">AI Technical Case Studies</a></li>
+              <li><a href="#work-ux">UX Writing &amp; Content Design</a></li>
+            </ul>
+          </details>
+        </li>
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -923,11 +1031,11 @@
         <h2 class="section-title">Work Samples</h2>
         <p class="section-sub">
           Documentation samples across API references, conceptual guides,
-          implementation guides, AI case studies, and UX writing.
+          implementation and deployment guides, AI technical case studies, and UX writing and content design.
         </p>
 
         <!-- API DOCUMENTATION -->
-        <div class="work-category" style="margin-top: 3rem">
+        <div class="work-category" id="work-api" style="margin-top: 3rem">
           <div class="category-header">
             <div class="category-dot"></div>
             <span class="category-title">API Documentation</span>
@@ -1003,7 +1111,7 @@
         </div>
 
         <!-- CONCEPTUAL GUIDES -->
-        <div class="work-category">
+        <div class="work-category" id="work-conceptual">
           <div class="category-header">
             <div class="category-dot"></div>
             <span class="category-title">Conceptual Guides</span>
@@ -1093,10 +1201,10 @@
         </div>
 
         <!-- IMPLEMENTATION GUIDES -->
-        <div class="work-category">
+        <div class="work-category" id="work-deployment">
           <div class="category-header">
             <div class="category-dot"></div>
-            <span class="category-title">Implementation Guides</span>
+            <span class="category-title">Implementation &amp; Deployment Guides</span>
           </div>
 
           <div class="sample-card">
@@ -1150,10 +1258,10 @@
         </div>
 
         <!-- AI & TECHNICAL CASE STUDIES -->
-        <div class="work-category">
+        <div class="work-category" id="work-ai">
           <div class="category-header">
             <div class="category-dot"></div>
-            <span class="category-title">AI &amp; Technical Case Studies</span>
+            <span class="category-title">AI Technical Case Studies</span>
           </div>
 
           <div class="sample-card">
@@ -1230,10 +1338,10 @@
         </div>
 
         <!-- UX WRITING -->
-        <div class="work-category">
+        <div class="work-category" id="work-ux">
           <div class="category-header">
             <div class="category-dot"></div>
-            <span class="category-title">UX Writing</span>
+            <span class="category-title">UX Writing &amp; Content Design</span>
           </div>
 
           <div class="sample-card">
@@ -1486,5 +1594,29 @@
     </section>
 
     <footer>© 2026 Vyshnavi Gurram · Technical Writer</footer>
+  
+    <script>
+      (() => {
+        const dropdown = document.querySelector(".nav-dropdown");
+        if (!dropdown) return;
+
+        dropdown.querySelectorAll(".work-dropdown-menu a").forEach((link) => {
+          link.addEventListener("click", () => dropdown.removeAttribute("open"));
+        });
+
+        document.addEventListener("click", (event) => {
+          if (dropdown.open && !dropdown.contains(event.target)) {
+            dropdown.removeAttribute("open");
+          }
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && dropdown.open) {
+            dropdown.removeAttribute("open");
+            dropdown.querySelector("summary")?.focus();
+          }
+        });
+      })();
+    </script>
   </body>
 </html>
