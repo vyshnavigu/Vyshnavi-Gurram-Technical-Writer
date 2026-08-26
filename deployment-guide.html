@@ -1,14 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-    <title>Deployment Guide – Sanitized Portfolio Sample</title>
-    <style>
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<title>Deployment Guide | Sanitized Portfolio Sample</title>
+<style>
       *,
       *::before,
       *::after {
@@ -643,569 +641,461 @@
         }
       }
     </style>
-  </head>
-  <body>
-    <div class="page-wrap">
-      <nav class="sidebar">
-        <a href="index.html" class="sidebar-back">
-          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" /></svg>
+</head>
+<body>
+<div class="page-wrap">
+<nav class="sidebar">
+<a class="sidebar-back" href="index.html">
+<svg viewbox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
           Back to portfolio
         </a>
-        <div class="sidebar-section">Contents</div>
-        <a href="#intro">Introduction</a>
-        <a href="#requirements">Requirements</a>
-        <div class="sidebar-section">Installation Steps</div>
-        <a href="#step1">Step 1 — JDK 8</a>
-        <a href="#step2">Step 2 — WildFly</a>
-        <a href="#step3">Step 3 — Maven</a>
-        <a href="#step4">Step 4 — OJDBC Driver</a>
-        <a href="#step5">Step 5 — LibreOffice</a>
-        <a href="#step6">Step 6 — Wkhtmltopdf</a>
-        <a href="#step7">Step 7 — WildFly Heap</a>
-        <div class="sidebar-section">Configuration</div>
-        <a href="#step8">Step 8 — Database</a>
-        <a href="#step9">Step 9 — Datasource</a>
-        <a href="#step10">Step 10 — System Properties</a>
-        <a href="#step11">Step 11 — Deploy App</a>
-        <a href="#troubleshooting">Troubleshooting</a>
-      </nav>
-      <main class="content">
-        <div class="doc-header">
-          <div class="doc-badge badge-guide">Implementation Guide</div>
-          <h1 class="doc-title">Application Server Deployment Guide</h1>
-          <p
-            style="
+<div class="sidebar-section">Contents</div>
+<a href="#intro">Introduction</a>
+<a href="#requirements">Requirements</a>
+<div class="sidebar-section">Installation Steps</div>
+<a href="#step1">Step 1: JDK 8</a>
+<a href="#step2">Step 2: WildFly</a>
+<a href="#step3">Step 3: Maven</a>
+<a href="#step4">Step 4: OJDBC Driver</a>
+<a href="#step5">Step 5: LibreOffice</a>
+<a href="#step6">Step 6: Wkhtmltopdf</a>
+<a href="#step7">Step 7: WildFly Heap</a>
+<div class="sidebar-section">Configuration</div>
+<a href="#step8">Step 8: Database</a>
+<a href="#step9">Step 9: Datasource</a>
+<a href="#step10">Step 10: System Properties</a>
+<a href="#step11">Step 11: Deploy App</a>
+<a href="#troubleshooting">Troubleshooting</a>
+</nav>
+<main class="content">
+<div class="doc-header">
+<div class="doc-badge badge-guide">Implementation Guide</div>
+<h1 class="doc-title">Application Server Deployment Guide</h1>
+<p style="
               font-size: 1rem;
               color: var(--text-muted);
               margin: 0.25rem 0 0.5rem;
-            "
-          >
+            ">
             WildFly + Maven on Red Hat / CentOS Linux
           </p>
-          <p class="doc-author">
-            by <strong>Vyshnavi Gurram</strong> – Technical Writer
-          </p>
-        </div>
-
-        <span class="section-anchor" id="intro"></span>
-        <h2>Introduction</h2>
-        <p>
-          This sanitized sample provides step-by-step procedures and scripts to deploy
-          a Java application server on Red Hat and CentOS Linux using WildFly and
-          Maven. It uses placeholders for application packages, database values,
-          server paths, and credentials so the guide can be shared publicly.
-        </p>
-
-        <span class="section-anchor" id="requirements"></span>
-        <h2>Minimum Software Requirements</h2>
-        <ul>
-          <li><strong>OS:</strong> CentOS 7+ Minimal Installation</li>
-          <li><strong>DB:</strong> Oracle-compatible database</li>
-        </ul>
-
-        <h3>Sample Deployment Requirements</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Step</th>
-              <th>Component</th>
-              <th>File(s)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1 – Java Setup</td>
-              <td>JDK 8</td>
-              <td>
-                <code>jdk-8u131-linux-x64.tar.gz</code><br /><code
-                  >jdk-install.sh</code
-                >
-              </td>
-            </tr>
-            <tr>
-              <td>2 – WildFly Setup</td>
-              <td>WildFly 10.1.0.Final</td>
-              <td>
-                <code>wildfly-10.1.0.Final.zip</code><br /><code
-                  >wildfly-install.sh</code
-                >
-              </td>
-            </tr>
-            <tr>
-              <td>3 – Maven Setup</td>
-              <td>Maven 3.5.0</td>
-              <td>
-                <code>apache-maven-3.5.0-bin.tar.gz</code><br /><code
-                  >maven-install.sh</code
-                >
-              </td>
-            </tr>
-            <tr>
-              <td>4 – Database Setup</td>
-              <td>Oracle-compatible DB</td>
-              <td><code>&lt;DB_SCHEMA_SCRIPT&gt;.sql</code></td>
-            </tr>
-            <tr>
-              <td>5 – WildFly Config</td>
-              <td>OJDBC / Datasource / App Files</td>
-              <td>
-                <code>ojdbc8.jar</code> · <code>APP_NAME.ear</code> ·
+<p class="doc-author">by <strong>Vyshnavi Gurram</strong>, Technical Writer</p>
+</div>
+<span class="section-anchor" id="intro"></span>
+<h2>Introduction</h2>
+<p>This portfolio sample shows how to deploy a Java application server on Red Hat or CentOS Linux using WildFly and Maven. Application names, database values, server paths, and credentials have been replaced with placeholders so the guide can be shared publicly.</p>
+<span class="section-anchor" id="requirements"></span>
+<h2>Minimum Software Requirements</h2>
+<ul>
+<li><strong>OS:</strong> CentOS 7+ Minimal Installation</li>
+<li><strong>DB:</strong> Oracle-compatible database</li>
+</ul>
+<h3>Deployment Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Component</th>
+<th>File(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1: Java Setup</td>
+<td>JDK 8</td>
+<td>
+<code>jdk-8u131-linux-x64.tar.gz</code><br/><code>jdk-install.sh</code>
+</td>
+</tr>
+<tr>
+<td>2: WildFly Setup</td>
+<td>WildFly 10.1.0.Final</td>
+<td>
+<code>wildfly-10.1.0.Final.zip</code><br/><code>wildfly-install.sh</code>
+</td>
+</tr>
+<tr>
+<td>3: Maven Setup</td>
+<td>Maven 3.5.0</td>
+<td>
+<code>apache-maven-3.5.0-bin.tar.gz</code><br/><code>maven-install.sh</code>
+</td>
+</tr>
+<tr>
+<td>4: Database Setup</td>
+<td>Oracle-compatible DB</td>
+<td><code>&lt;DB_SCHEMA_SCRIPT&gt;.sql</code></td>
+</tr>
+<tr>
+<td>5: WildFly Config</td>
+<td>OJDBC / Datasource / App Files</td>
+<td>
+<code>ojdbc8.jar</code> · <code>APP_NAME.ear</code> ·
                 <code>WEB_APP_NAME.war</code>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          All required files will be provided separately. Create a deployment working directory such as
-          <code>&lt;DEPLOYMENT_DIR&gt;</code> and copy all required files into it.
-        </p>
-        <p>
-          Set the correct permissions on the folder to allow script execution:
-        </p>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>bash</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code># chmod -R 755 &lt;DEPLOYMENT_DIR&gt;/</code></pre>
-        </div>
-        <div class="info-box">
-          <h4>Sanitized sample note</h4>
-          <p>
-            For a public portfolio, replace original screenshots with sanitized
-            screenshots or placeholders. Do not show internal package names,
-            database objects, server paths, usernames, hostnames, or production
-            data in images.
-          </p>
-        </div>
-
-        <span class="section-anchor" id="step1"></span>
-        <h2>Step 1 — Installing JDK 8</h2>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>bash</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code># cd &lt;DEPLOYMENT_DIR&gt;
+</td>
+</tr>
+</tbody>
+</table>
+<p>Place the required files in a deployment working directory such as <code>&lt;DEPLOYMENT_DIR&gt;</code> before you begin.</p>
+<p>Set the directory permissions so the installation scripts can run:</p>
+<div class="code-block">
+<div class="code-lang">
+<span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code># chmod -R 755 &lt;DEPLOYMENT_DIR&gt;/</code></pre>
+</div>
+<div class="info-box">
+<h4>Portfolio Note</h4>
+<p>Environment-specific screenshots and values have been removed or replaced with placeholders. This keeps internal package names, database objects, server paths, usernames, hostnames, and production data out of the public sample.</p>
+</div>
+<span class="section-anchor" id="step1"></span>
+<h2>Step 1: Installing JDK 8</h2>
+<div class="code-block">
+<div class="code-lang">
+<span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code># cd &lt;DEPLOYMENT_DIR&gt;
 # ./jdk-install.sh</code></pre>
-        </div>
-        <div class="callout callout-note">
-          <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="8" x2="12" y2="12" />
-            <line x1="12" y1="16" x2="12.01" y2="16" />
-          </svg>
-          <div class="callout-body">
-            <div class="callout-title">Note</div>
-            <p>
+</div>
+<div class="callout callout-note">
+<svg viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="10"></circle>
+<line x1="12" x2="12" y1="8" y2="12"></line>
+<line x1="12" x2="12.01" y1="16" y2="16"></line>
+</svg>
+<div class="callout-body">
+<div class="callout-title">Note</div>
+<p>
               Do not un-tar the zip file. If a previous version of Java is
               installed, you will be prompted to select a version. Select
               <code>/opt/jdk1.8.0_131/bin/java</code>.
             </p>
-          </div>
-        </div>
-        <p>
-          Once setup is complete, you will see:
-          <em>"Java 8 (64-bit) setup is complete".</em>
-        </p>
-        <p>Verify the installed version:</p>
-        <div class="code-block">
-          <div class="code-lang"><span>bash</span></div>
-          <pre><code># java -version
+</div>
+</div>
+<p>When the installation is complete, confirm that the message <em>"Java 8 (64-bit) setup is complete."</em> appears.</p>
+<p>Verify the installed Java version:</p>
+<div class="code-block">
+<div class="code-lang"><span>bash</span></div>
+<pre><code># java -version
 java version "1.8.0_131"
 Java(TM) SE Runtime Environment (build 1.8.0_131-b11)
 Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)</code></pre>
-        </div>
-
-        <span class="section-anchor" id="step2"></span>
-        <h2>Step 2 — Installing WildFly</h2>
-        <h3>Part A — Install WildFly 10.1.0.Final</h3>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>bash</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code># ./wildfly-install.sh</code></pre>
-        </div>
-        <p>
-          Type <code>yes</code> to continue and wait for the installation to
-          complete successfully.
-        </p>
-        <h3>Part B — Add User to WildFly Management</h3>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>bash</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code># cd /opt/wildfly-10.1.0.Final/bin
+</div>
+<span class="section-anchor" id="step2"></span>
+<h2>Step 2: Installing WildFly</h2>
+<h3>Part A: Install WildFly 10.1.0.Final</h3>
+<div class="code-block">
+<div class="code-lang">
+<span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code># ./wildfly-install.sh</code></pre>
+</div>
+<p>Type </p>
+<h3>Part B: Add User to WildFly Management</h3>
+<div class="code-block">
+<div class="code-lang">
+<span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code># cd /opt/wildfly-10.1.0.Final/bin
 # ./add-user.sh</code></pre>
-        </div>
-        <p>
-          Leave the group field blank and press Enter to add the user to the
-          management group by default.
-        </p>
-
-        <span class="section-anchor" id="step3"></span>
-        <h2>Step 3 — Installing Maven 3.5.0</h2>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>bash</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code># cd &lt;DEPLOYMENT_DIR&gt;
+</div>
+<p>Leave the group field blank and press Enter. The user will be added to the default management group.</p>
+<span class="section-anchor" id="step3"></span>
+<h2>Step 3: Installing Maven 3.5.0</h2>
+<div class="code-block">
+<div class="code-lang">
+<span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code># cd &lt;DEPLOYMENT_DIR&gt;
 # ./maven-install.sh</code></pre>
-        </div>
-        <p>
-          Wait until you see the success message. Maven will be enabled on
-          restart.
-        </p>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>bash</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code># sudo reboot</code></pre>
-        </div>
-        <p>After rebooting, verify Maven:</p>
-        <div class="code-block">
-          <div class="code-lang"><span>bash</span></div>
-          <pre><code># mvn -version</code></pre>
-        </div>
-
-        <span class="section-anchor" id="step4"></span>
-        <h2>Step 4 — Installing the OJDBC Driver</h2>
-        <p>
-          This can be done either through Maven or the WildFly management
-          console. The following instructions use Maven.
-        </p>
-        <p>
-          Upload <code>ojdbc8.jar</code> to the server, navigate to its
-          directory, and run:
-        </p>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>bash</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code>mvn wildfly:deploy-only \
+</div>
+<p>Wait for the success message. Maven will be available after the server restarts.</p>
+<div class="code-block">
+<div class="code-lang">
+<span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code># sudo reboot</code></pre>
+</div>
+<p>After the restart, verify the Maven installation:</p>
+<div class="code-block">
+<div class="code-lang"><span>bash</span></div>
+<pre><code># mvn -version</code></pre>
+</div>
+<span class="section-anchor" id="step4"></span>
+<h2>Step 4: Installing the OJDBC Driver</h2>
+<p>You can install the OJDBC driver through Maven or the WildFly Management Console. The steps below use Maven.</p>
+<p>Upload <code>ojdbc8.jar</code> to the server, open the directory that contains the file, and run:</p>
+<div class="code-block">
+<div class="code-lang">
+<span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code>mvn wildfly:deploy-only \
   -Dwildfly.hostname=&lt;SERVER_HOST&gt; \
   -Dwildfly.username=&lt;ADMIN_USER&gt; \
   -Dwildfly.password=&lt;ADMIN_PASSWORD&gt; \
   -Dwildfly.deployment.filename=ojdbc8.jar \
   -Dwildfly.deployment.targetDir=.</code></pre>
-        </div>
-        <p>Wait for the BUILD SUCCESS message, then restart the service:</p>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>bash</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code># service wildfly stop
+</div>
+<p>When the build completes successfully, restart WildFly:</p>
+<div class="code-block">
+<div class="code-lang">
+<span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code># service wildfly stop
 # service wildfly start</code></pre>
-        </div>
-
-        <span class="section-anchor" id="step5"></span>
-        <h2>Step 5 — Install LibreOffice</h2>
-        <p>
-          LibreOffice is used by the application to add and modify documents.
-          Install using one of the following methods:
-        </p>
-        <details class="example">
-          <summary><span>Option A — Install via yum</span></summary>
-          <div class="example-body">
-            <div class="code-block" style="margin: 0; border-radius: 0">
-              <div class="code-lang">
-                <span>bash</span
-                ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-              </div>
-              <pre><code>yum install openoffice.org-headless openoffice.org-writer \
+</div>
+<span class="section-anchor" id="step5"></span>
+<h2>Step 5: Install LibreOffice</h2>
+<p>The application uses LibreOffice to create and update documents. Install it using either of the following methods:</p>
+<details class="example">
+<summary><span>Option A: Install via yum</span></summary>
+<div class="example-body">
+<div class="code-block" style="margin: 0; border-radius: 0">
+<div class="code-lang">
+<span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code>yum install openoffice.org-headless openoffice.org-writer \
             openoffice.org-calc openoffice.org-impress openoffice.org-draw</code></pre>
-            </div>
-          </div>
-        </details>
-        <details class="example">
-          <summary><span>Option B — Install from downloaded RPM</span></summary>
-          <div class="example-body">
-            <div class="code-block" style="margin: 0; border-radius: 0">
-              <div class="code-lang">
-                <span>bash</span
-                ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-              </div>
-              <pre><code>wget &lt;DOWNLOAD_URL&gt;/LibreOffice_6.0.4_Linux_x86-64_rpm.tar.gz
+</div>
+</div>
+</details>
+<details class="example">
+<summary><span>Option B: Install from downloaded RPM</span></summary>
+<div class="example-body">
+<div class="code-block" style="margin: 0; border-radius: 0">
+<div class="code-lang">
+<span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code>wget &lt;DOWNLOAD_URL&gt;/LibreOffice_6.0.4_Linux_x86-64_rpm.tar.gz
 tar -xvf LibreOffice_6.0.4_Linux_x86-64_rpm.tar.gz
 cd LibreOffice_6.0.4.2_Linux_x86-64_rpm/RPMS
 yum install *.rpm</code></pre>
-            </div>
-          </div>
-        </details>
-
-        <span class="section-anchor" id="step6"></span>
-        <h2>Step 6 — Install Wkhtmltopdf</h2>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>bash</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code>wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
+</div>
+</div>
+</details>
+<span class="section-anchor" id="step6"></span>
+<h2>Step 6: Install Wkhtmltopdf</h2>
+<div class="code-block">
+<div class="code-lang">
+<span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code>wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
 sudo tar xvf wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
 sudo mv wkhtmltox/bin/wkhtmlto* /usr/bin/
 yum install libXrender libXext fontconfig    # install dependencies</code></pre>
-        </div>
-
-        <span class="section-anchor" id="step7"></span>
-        <h2>Step 7 — Increase WildFly Heap and Thread Usage</h2>
-        <p>
-          To handle the application load properly, increase WildFly's memory
-          allocation:
-        </p>
-        <ol>
-          <li>Log in to the server.</li>
-          <li>Stop the WildFly service.</li>
-          <li>
+</div>
+<span class="section-anchor" id="step7"></span>
+<h2>Step 7: Increase WildFly Heap and Thread Usage</h2>
+<p>Increase the WildFly memory allocation before running the application:</p>
+<ol>
+<li>Log in to the server.</li>
+<li>Stop the WildFly service.</li>
+<li>
             Navigate to <code>/opt/wildfly-10.1.0.Final/bin/</code> and open
             <code>standalone.conf</code> for editing.
           </li>
-          <li>
+<li>
             Set <code>-Xmx1G</code> and <code>-XX:MaxMetaspaceSize=1G</code>.
           </li>
-          <li>Start the WildFly service.</li>
-        </ol>
-
-        <span class="section-anchor" id="step8"></span>
-        <h2>Step 8 — Database Configuration</h2>
-        <p>
-          Additional tables, sequences, triggers, and views need to be added to
-          the existing database using the provided
-          <code>schema.sql</code> script.
-        </p>
-        <h3>Check Container Name</h3>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>sql</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code>sqlplus / as sysdba
+<li>Start the WildFly service.</li>
+</ol>
+<span class="section-anchor" id="step8"></span>
+<h2>Step 8: Database Configuration</h2>
+<p>Add the required tables, sequences, triggers, and views to the existing database by running the provided <code>schema.sql</code> script.</p>
+<h3>Check Container Name</h3>
+<div class="code-block">
+<div class="code-lang">
+<span>sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code>sqlplus / as sysdba
 column name format a30
 select con_id, name, open_mode from v$pdbs;</code></pre>
-        </div>
-        <h3>Check Schema Name</h3>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>sql</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code>alter session set container=&lt;CONTAINER_NAME&gt;;
+</div>
+<h3>Check Schema Name</h3>
+<div class="code-block">
+<div class="code-lang">
+<span>sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code>alter session set container=&lt;CONTAINER_NAME&gt;;
 select username from dba_users order by 1;</code></pre>
-        </div>
-        <h3>Run the SQL Script</h3>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>sql</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code>sqlplus &lt;DB_USER&gt;/&lt;DB_PASSWORD&gt;@&lt;DB_SERVICE&gt;
+</div>
+<h3>Run the SQL Script</h3>
+<div class="code-block">
+<div class="code-lang">
+<span>sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code>sqlplus &lt;DB_USER&gt;/&lt;DB_PASSWORD&gt;@&lt;DB_SERVICE&gt;
 @&lt;DB_SCHEMA_SCRIPT&gt;.sql
 exit</code></pre>
-        </div>
-        <div class="callout callout-important">
-          <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="8" x2="12" y2="12" />
-            <line x1="12" y1="16" x2="12.01" y2="16" />
-          </svg>
-          <div class="callout-body">
-            <div class="callout-title">Important</div>
-            <p>
-              If the application requires seed or reference data, migrate it using
-              a sanitized data script. Do not publish internal table names,
-              production records, or business-specific reference data in a
-              public portfolio sample.
-            </p>
-          </div>
-        </div>
-
-        <span class="section-anchor" id="step9"></span>
-        <h2>Step 9 — Add Datasource to Application Server</h2>
-        <p>
-          Open the WildFly Management Console and navigate to
-          <strong
-            >Configuration &gt; Subsystems &gt; Datasource &gt; Non-XA</strong
-          >, then click <strong>Add</strong> and select Oracle Datasource.
-        </p>
-        <details class="example">
-          <summary><span>Datasource Attributes</span></summary>
-          <div class="example-body">
-            <div class="code-block" style="margin: 0; border-radius: 0">
-              <div class="code-lang"><span>config</span></div>
-              <pre><code>Name:             APP_DATASOURCE
+</div>
+<div class="callout callout-important">
+<svg viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="10"></circle>
+<line x1="12" x2="12" y1="8" y2="12"></line>
+<line x1="12" x2="12.01" y1="16" y2="16"></line>
+</svg>
+<div class="callout-body">
+<div class="callout-title">Important</div>
+<p>If the application requires seed or reference data, use a sanitized data script for this portfolio sample. Do not include internal table names, production records, or business-specific reference data.</p>
+</div>
+</div>
+<span class="section-anchor" id="step9"></span>
+<h2>Step 9: Add Datasource to Application Server</h2>
+<p>In the WildFly Management Console, go to <strong>Configuration &gt; Subsystems &gt; Datasource &gt; Non-XA</strong>. Click <strong>Add</strong>, then select the Oracle datasource.</p>
+<details class="example">
+<summary><span>Datasource Attributes</span></summary>
+<div class="example-body">
+<div class="code-block" style="margin: 0; border-radius: 0">
+<div class="code-lang"><span>config</span></div>
+<pre><code>Name:             APP_DATASOURCE
 JNDI:             java:jboss/datasources/APP_DATASOURCE
 Is Enabled:       true
 Driver:           ojdbc8.jar
 Driver Class:     oracle.jdbc.OracleDriver</code></pre>
-            </div>
-          </div>
-        </details>
-        <details class="example">
-          <summary><span>Connection Settings</span></summary>
-          <div class="example-body">
-            <div class="code-block" style="margin: 0; border-radius: 0">
-              <div class="code-lang"><span>config</span></div>
-              <pre><code>Connection URL:   jdbc:oracle:thin:@//&lt;DB_HOST&gt;:&lt;DB_PORT&gt;/&lt;DB_SERVICE&gt;
+</div>
+</div>
+</details>
+<details class="example">
+<summary><span>Connection Settings</span></summary>
+<div class="example-body">
+<div class="code-block" style="margin: 0; border-radius: 0">
+<div class="code-lang"><span>config</span></div>
+<pre><code>Connection URL:   jdbc:oracle:thin:@//&lt;DB_HOST&gt;:&lt;DB_PORT&gt;/&lt;DB_SERVICE&gt;
 Use JTA:          true
 Use CCM:          true</code></pre>
-            </div>
-          </div>
-        </details>
-        <details class="example">
-          <summary><span>Security Settings</span></summary>
-          <div class="example-body">
-            <div class="code-block" style="margin: 0; border-radius: 0">
-              <div class="code-lang"><span>config</span></div>
-              <pre><code>Username:   &lt;DB_USER&gt;
+</div>
+</div>
+</details>
+<details class="example">
+<summary><span>Security Settings</span></summary>
+<div class="example-body">
+<div class="code-block" style="margin: 0; border-radius: 0">
+<div class="code-lang"><span>config</span></div>
+<pre><code>Username:   &lt;DB_USER&gt;
 Password:   &lt;DB_PASSWORD&gt;</code></pre>
-            </div>
-          </div>
-        </details>
-        <p>
-          Once the datasource is added, restart the service and test the
-          database connection:
-        </p>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>bash</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code># service wildfly stop
+</div>
+</div>
+</details>
+<p>After adding the datasource, restart WildFly and test the database connection:</p>
+<div class="code-block">
+<div class="code-lang">
+<span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code># service wildfly stop
 # service wildfly start</code></pre>
-        </div>
-
-        <span class="section-anchor" id="step10"></span>
-        <h2>Step 10 — Add Default System Properties</h2>
-        <p>
-          In the WildFly Management Console, navigate to
-          <strong>Configuration &gt; System Properties &gt; View</strong>, then
-          click <strong>Add</strong> for each of the following:
-        </p>
-        <table>
-          <thead>
-            <tr>
-              <th>Key</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>app.jwt.secret</code></td>
-              <td><code>&lt;SECURE_SECRET_VALUE&gt;</code></td>
-            </tr>
-            <tr>
-              <td><code>app.report.output.dir</code></td>
-              <td><code>&lt;REPORT_OUTPUT_DIR&gt;</code></td>
-            </tr>
-            <tr>
-              <td><code>document.converter.path</code></td>
-              <td><code>&lt;LIBREOFFICE_INSTALL_PATH&gt;</code></td>
-            </tr>
-            <tr>
-              <td><code>app.export.output.dir</code></td>
-              <td><code>&lt;EXPORT_OUTPUT_DIR&gt;</code></td>
-            </tr>
-            <tr>
-              <td><code>security.service.host</code></td>
-              <td><code>&lt;SECURITY_SERVICE_HOST&gt;</code></td>
-            </tr>
-            <tr>
-              <td><code>security.service.port</code></td>
-              <td><code>&lt;SECURITY_SERVICE_PORT&gt;</code></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <span class="section-anchor" id="step11"></span>
-        <h2>Step 11 — Deploy Application Files</h2>
-        <h3>Deploy <code>WEB_APP_NAME.war</code></h3>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>bash</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code>mvn wildfly:deploy-only \
+</div>
+<span class="section-anchor" id="step10"></span>
+<h2>Step 10: Add Default System Properties</h2>
+<p>In the WildFly Management Console, go to <strong>Configuration &gt; System Properties &gt; View</strong>. Click <strong>Add</strong> for each property below:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app.jwt.secret</code></td>
+<td><code>&lt;SECURE_SECRET_VALUE&gt;</code></td>
+</tr>
+<tr>
+<td><code>app.report.output.dir</code></td>
+<td><code>&lt;REPORT_OUTPUT_DIR&gt;</code></td>
+</tr>
+<tr>
+<td><code>document.converter.path</code></td>
+<td><code>&lt;LIBREOFFICE_INSTALL_PATH&gt;</code></td>
+</tr>
+<tr>
+<td><code>app.export.output.dir</code></td>
+<td><code>&lt;EXPORT_OUTPUT_DIR&gt;</code></td>
+</tr>
+<tr>
+<td><code>security.service.host</code></td>
+<td><code>&lt;SECURITY_SERVICE_HOST&gt;</code></td>
+</tr>
+<tr>
+<td><code>security.service.port</code></td>
+<td><code>&lt;SECURITY_SERVICE_PORT&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<span class="section-anchor" id="step11"></span>
+<h2>Step 11: Deploy Application Files</h2>
+<h3>Deploy <code>WEB_APP_NAME.war</code></h3>
+<div class="code-block">
+<div class="code-lang">
+<span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code>mvn wildfly:deploy-only \
   -Dwildfly.hostname=&lt;SERVER_HOST&gt; \
   -Dwildfly.username=&lt;ADMIN_USER&gt; \
   -Dwildfly.password=&lt;ADMIN_PASSWORD&gt; \
   -Dwildfly.deployment.filename=WEB_APP_NAME.war \
   -Dwildfly.deployment.targetDir=.</code></pre>
-        </div>
-        <p>Wait for the BUILD SUCCESS message before continuing.</p>
-        <h3>Deploy <code>APP_NAME.ear</code></h3>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>bash</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code>mvn wildfly:deploy-only \
+</div>
+<p>Wait for the BUILD SUCCESS message before deploying the next file.</p>
+<h3>Deploy <code>APP_NAME.ear</code></h3>
+<div class="code-block">
+<div class="code-lang">
+<span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code>mvn wildfly:deploy-only \
   -Dwildfly.hostname=&lt;SERVER_HOST&gt; \
   -Dwildfly.username=&lt;ADMIN_USER&gt; \
   -Dwildfly.password=&lt;ADMIN_PASSWORD&gt; \
   -Dwildfly.deployment.filename=APP_NAME.ear \
   -Dwildfly.deployment.targetDir=.</code></pre>
-        </div>
-        <p>Wait for the BUILD SUCCESS message, then restart WildFly:</p>
-        <div class="code-block">
-          <div class="code-lang">
-            <span>bash</span
-            ><button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          </div>
-          <pre><code># service wildfly stop
+</div>
+<p>When the build completes successfully, restart WildFly:</p>
+<div class="code-block">
+<div class="code-lang">
+<span>bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div>
+<pre><code># service wildfly stop
 # service wildfly start</code></pre>
-        </div>
-        <div class="callout callout-note">
-          <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="8" x2="12" y2="12" />
-            <line x1="12" y1="16" x2="12.01" y2="16" />
-          </svg>
-          <div class="callout-body">
-            <div class="callout-title">Alternative</div>
-            <p>
+</div>
+<div class="callout callout-note">
+<svg viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="10"></circle>
+<line x1="12" x2="12" y1="8" y2="12"></line>
+<line x1="12" x2="12.01" y1="16" y2="16"></line>
+</svg>
+<div class="callout-body">
+<div class="callout-title">Alternative</div>
+<p>
               You can also deploy files using the WildFly Management Console by
               navigating to <strong>Home &gt; Deployments &gt; Add</strong> and
               browsing for the files.
             </p>
-          </div>
-        </div>
-
-        <span class="section-anchor" id="troubleshooting"></span>
-        <h2>Troubleshooting</h2>
-        <p>
-          Deployments most commonly fail during the application package deployment stage.
-          Common causes include:
-        </p>
-        <ul>
-          <li>A missing required database object</li>
-          <li>Required seed or reference data that has not been migrated</li>
-          <li>General database configuration issues</li>
-          <li>Build errors</li>
-        </ul>
-        <div class="callout callout-caution">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
-            />
-            <line x1="12" y1="9" x2="12" y2="13" />
-            <line x1="12" y1="17" x2="12.01" y2="17" />
-          </svg>
-          <div class="callout-body">
-            <div class="callout-title">When a deployment fails</div>
-            <p>
+</div>
+</div>
+<span class="section-anchor" id="troubleshooting"></span>
+<h2>Troubleshooting</h2>
+<p>If deployment fails, check the application package, database setup, and build output first. Common causes include:</p>
+<ul>
+<li>A required database object is missing.</li>
+<li>Required seed or reference data has not been migrated.</li>
+<li>The database configuration is incomplete or incorrect.</li>
+<li>The build failed or contains unresolved errors.</li>
+</ul>
+<div class="callout callout-caution">
+<svg viewbox="0 0 24 24">
+<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path>
+<line x1="12" x2="12" y1="9" y2="13"></line>
+<line x1="12" x2="12.01" y1="17" y2="17"></line>
+</svg>
+<div class="callout-body">
+<div class="callout-title">When a deployment fails</div>
+<p>
               Start by reviewing the WildFly server logs and verifying the
               database schema and required reference data are complete and up to date.
             </p>
-          </div>
-        </div>
-      </main>
-    </div>
-    <script>
+</div>
+</div>
+</main>
+</div>
+<script>
       function copyCode(btn) {
         const pre = btn.closest(".code-block").querySelector("pre");
         navigator.clipboard.writeText(pre.innerText).then(() => {
@@ -1235,5 +1125,5 @@ Password:   &lt;DB_PASSWORD&gt;</code></pre>
       );
       anchors.forEach((a) => obs.observe(a));
     </script>
-  </body>
+</body>
 </html>
