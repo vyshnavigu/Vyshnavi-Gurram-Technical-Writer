@@ -396,20 +396,38 @@
       .callout-note .callout-body p {
         color: var(--blue-800);
       }
-      .callout-caution {
-        background: var(--amber-50);
-        border-left: 3px solid #f4b400;
+      /* Semantic callouts */
+      .callout-info {
+        background: #eef7ff;
+        border: 1px solid #c7e2fb;
+        border-left: 4px solid var(--blue-500);
       }
-      .callout-caution .callout-icon svg {
-        stroke: #e6a800;
+      .callout-info .callout-icon svg {
+        stroke: var(--blue-600);
       }
-      .callout-caution .callout-title {
-        color: var(--amber-700);
+      .callout-info .callout-title {
+        color: var(--blue-700);
       }
-      .callout-caution .callout-body p {
-        color: #704a10;
+      .callout-info .callout-body p {
+        color: var(--blue-800);
       }
-      .callout-danger {
+
+      .callout-warning {
+        background: #fff4ed;
+        border: 1px solid #fed7aa;
+        border-left: 4px solid #ea580c;
+      }
+      .callout-warning .callout-icon svg {
+        stroke: #c2410c;
+      }
+      .callout-warning .callout-title {
+        color: #9a3412;
+      }
+      .callout-warning .callout-body p {
+        color: #7c2d12;
+      }
+
+.callout-danger {
         background: var(--red-50);
         border-left: 3px solid #e24b4a;
       }
@@ -809,7 +827,7 @@
           <div class="code-lang"><span>text</span></div>
           <pre><code>bn_live_abc123xyz456def789</code></pre>
         </div>
-        <div class="callout callout-caution">
+        <div class="callout callout-warning">
           <div class="callout-icon">
             <svg viewBox="0 0 24 24">
               <path
@@ -820,7 +838,7 @@
             </svg>
           </div>
           <div class="callout-body">
-            <div class="callout-title">Caution</div>
+            <div class="callout-title">Warning</div>
             <p>
               Never expose the API key in client-side code or public
               repositories. Store it as an environment variable.
@@ -962,18 +980,16 @@
           </div>
         </details>
 
-        <div class="callout callout-caution">
+        <div class="callout callout-info">
           <div class="callout-icon">
             <svg viewBox="0 0 24 24">
-              <path
-                d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
-              />
-              <line x1="12" y1="9" x2="12" y2="13" />
-              <line x1="12" y1="17" x2="12.01" y2="17" />
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="11" x2="12" y2="16" />
+              <line x1="12" y1="8" x2="12.01" y2="8" />
             </svg>
           </div>
           <div class="callout-body">
-            <div class="callout-title">Caution</div>
+            <div class="callout-title">Information</div>
             <p>
               The <code>registrationToken</code> is valid for 10 minutes. Pass
               it to the next registration step. If it expires, the user must
@@ -1322,18 +1338,16 @@
           </div>
         </details>
 
-        <div class="callout callout-caution">
+        <div class="callout callout-info">
           <div class="callout-icon">
             <svg viewBox="0 0 24 24">
-              <path
-                d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
-              />
-              <line x1="12" y1="9" x2="12" y2="13" />
-              <line x1="12" y1="17" x2="12.01" y2="17" />
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="11" x2="12" y2="16" />
+              <line x1="12" y1="8" x2="12.01" y2="8" />
             </svg>
           </div>
           <div class="callout-body">
-            <div class="callout-title">Caution</div>
+            <div class="callout-title">Information</div>
             <p>The <code>resetToken</code> is valid for 10 minutes.</p>
           </div>
         </div>
