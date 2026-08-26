@@ -97,6 +97,94 @@
         color: var(--accent);
       }
 
+      /* WORK DROPDOWN */
+      .nav-dropdown {
+        position: relative;
+      }
+
+      .nav-dropdown summary {
+        list-style: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        transition: color 0.2s;
+        padding: 18px 0;
+        user-select: none;
+      }
+
+      .nav-dropdown summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .nav-dropdown summary::after {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-right: 1.5px solid currentColor;
+        border-bottom: 1.5px solid currentColor;
+        transform: rotate(45deg) translateY(-2px);
+        transition: transform 0.18s ease;
+      }
+
+      .nav-dropdown summary:hover,
+      .nav-dropdown summary:focus-visible,
+      .nav-dropdown[open] summary {
+        color: var(--accent);
+      }
+
+      .nav-dropdown summary:focus-visible {
+        outline: 2px solid var(--blue-200);
+        outline-offset: 5px;
+        border-radius: 4px;
+      }
+
+      .nav-dropdown[open] summary::after {
+        transform: rotate(225deg) translate(-1px, -1px);
+      }
+
+      .work-dropdown-menu {
+        position: absolute;
+        top: calc(100% - 3px);
+        right: 0;
+        width: 330px;
+        padding: 8px;
+        margin: 0;
+        list-style: none;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: 0 12px 32px rgba(17, 28, 43, 0.12);
+      }
+
+      .work-dropdown-menu li {
+        margin: 0;
+      }
+
+      .work-dropdown-menu a {
+        display: block;
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        line-height: 1.35;
+        color: var(--text-secondary);
+      }
+
+      .work-dropdown-menu a:hover,
+      .work-dropdown-menu a:focus-visible {
+        color: var(--blue-700);
+        background: var(--blue-50);
+      }
+
+      .work-dropdown-menu a:focus-visible {
+        outline: 2px solid var(--blue-200);
+        outline-offset: -2px;
+      }
+
       /* SECTIONS */
       section {
         padding: 5rem 2rem;
@@ -747,7 +835,28 @@
       <a href="#hero" class="nav-logo">Vyshnavi Gurram</a>
       <ul class="nav-links">
         <li><a href="#skills">Skills</a></li>
-        <li><a href="#work">Work</a></li>
+        <li>
+          <details class="nav-dropdown">
+            <summary aria-label="Open work samples menu">Work</summary>
+            <ul class="work-dropdown-menu">
+              <li>
+                <a href="mfa-api.html">API Documentation</a>
+              </li>
+              <li>
+                <a href="eda-guide.html">Conceptual Guides</a>
+              </li>
+              <li>
+                <a href="deployment-guide.html">Implementation &amp; Deployment Guides</a>
+              </li>
+              <li>
+                <a href="jira-case-study.html">AI Technical Case Studies</a>
+              </li>
+              <li>
+                <a href="session_navigator_ux_case_study.html">UX Writing &amp; Content Design</a>
+              </li>
+            </ul>
+          </details>
+        </li>
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -946,7 +1055,7 @@
                   verification, TOTP-based MFA enrollment, secure login flows,
                   password recovery, and rate limiting — written for banking and
                   finance platforms. Includes curl examples, JSON
-                  request/response schemas, caution callouts, and an interactive
+                  request/response schemas, information and warning callouts, and an interactive
                   Swagger UI reference.
                 </p>
                 <div class="sample-meta">
@@ -1486,5 +1595,25 @@
     </section>
 
     <footer>© 2026 Vyshnavi Gurram · Technical Writer</footer>
+  
+    <script>
+      (() => {
+        const dropdown = document.querySelector(".nav-dropdown");
+        if (!dropdown) return;
+
+        document.addEventListener("click", (event) => {
+          if (dropdown.open && !dropdown.contains(event.target)) {
+            dropdown.removeAttribute("open");
+          }
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && dropdown.open) {
+            dropdown.removeAttribute("open");
+            dropdown.querySelector("summary")?.focus();
+          }
+        });
+      })();
+    </script>
   </body>
 </html>
