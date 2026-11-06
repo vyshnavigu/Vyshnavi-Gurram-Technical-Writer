@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DocFlow AI Case Study | Vyshnavi Gurram</title>
+  <meta name="description" content="A technical writing case study about API documentation generation, change detection, AI-assisted drafting, and human review." />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --blue-50: #ebf4fd;
+        --blue-100: #c2defa;
+        --blue-200: #97c6f6;
+        --blue-500: #2383d6;
+        --blue-600: #1868b0;
+        --blue-700: #0f4f8a;
+        --slate-50: #f7f9fc;
+        --slate-100: #eef2f8;
+        --slate-200: #dde5f0;
+        --slate-600: #5e7290;
+        --slate-700: #3d506a;
+        --slate-800: #253347;
+        --slate-900: #111c2b;
+        --amber-50: #fdf4e7;
+        --amber-700: #8a5d12;
+        --green-50: #ebf7f0;
+        --green-700: #1b6b42;
+        --green-200: #b2ddca;
+        --red-50: #fef0f0;
+        --red-700: #952c2c;
+        --white: #fff;
+        --border: #dde5f0;
+        --text-primary: #111c2b;
+        --text-secondary: #3d506a;
+        --text-muted: #5e7290;
+        --accent: #2383d6;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--white);
+        color: var(--text-primary);
+        line-height: 1.7;
+        font-size: 16px;
+        -webkit-font-smoothing: antialiased;
+      }
+      .page-wrap {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        min-height: 100vh;
+      }
+      .sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        background: var(--slate-50);
+        border-right: 1px solid var(--border);
+        padding: 2rem 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+      }
+      .sidebar-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      .sidebar-back:hover {
+        color: var(--accent);
+      }
+      .sidebar-back svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .sidebar-section {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin: 1rem 0 0.4rem;
+        padding-left: 0.5rem;
+      }
+      .sidebar a {
+        display: block;
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 6px;
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+      .sidebar a:hover {
+        background: var(--blue-50);
+        color: var(--accent);
+      }
+      .sidebar a.active {
+        background: var(--blue-50);
+        color: var(--accent);
+        font-weight: 500;
+      }
+      .content {
+        padding: 3rem 3.5rem;
+        max-width: 820px;
+      }
+      .doc-header {
+        margin-bottom: 2.5rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .doc-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 999px;
+        margin-bottom: 1rem;
+      }
+      .badge-api {
+        background: var(--green-50);
+        color: var(--green-700);
+        border: 1px solid var(--green-200);
+      }
+      .badge-concept {
+        background: #f3edfd;
+        color: #5b34a0;
+        border: 1px solid #cbbef5;
+      }
+      .badge-guide {
+        background: var(--blue-50);
+        color: var(--blue-700);
+        border: 1px solid var(--blue-200);
+      }
+      .badge-case {
+        background: var(--amber-50);
+        color: var(--amber-700);
+        border: 1px solid #f0d49a;
+      }
+      .badge-ux {
+        background: var(--red-50);
+        color: var(--red-700);
+        border: 1px solid #f5c0c0;
+      }
+      .doc-title {
+        font-family: "DM Serif Display", serif;
+        font-size: 2.2rem;
+        letter-spacing: -0.03em;
+        color: var(--text-primary);
+        line-height: 1.15;
+        margin-bottom: 0.6rem;
+      }
+      .doc-author {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+      }
+      .doc-author strong {
+        color: var(--text-secondary);
+      }
+      h2 {
+        font-family: "DM Serif Display", serif;
+        font-size: 1.6rem;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+        margin: 3rem 0 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border);
+      }
+      h3 {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 2rem 0 0.6rem;
+      }
+      h4 {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        margin: 1.5rem 0 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+      }
+      p {
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        line-height: 1.75;
+      }
+      ul,
+      ol {
+        color: var(--text-secondary);
+        padding-left: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      li {
+        margin-bottom: 0.4rem;
+        line-height: 1.65;
+      }
+      strong {
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+      /* CALLOUTS */
+      .callout {
+        border-radius: 8px;
+        padding: 1rem 1.25rem;
+        margin: 1.25rem 0;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      .callout svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        margin-top: 2px;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .callout-body {
+        flex: 1;
+      }
+      .callout-title {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+      .callout-body p {
+        margin: 0;
+        font-size: 0.875rem;
+        line-height: 1.6;
+      }
+      .callout-note {
+        background: var(--blue-50);
+        border-left: 3px solid var(--blue-500);
+      }
+      .callout-note svg {
+        stroke: var(--blue-500);
+      }
+      .callout-note .callout-title {
+        color: var(--blue-700);
+      }
+      .callout-note .callout-body p {
+        color: var(--blue-700);
+      }
+      .callout-caution {
+        background: var(--amber-50);
+        border-left: 3px solid #f4b400;
+      }
+      .callout-caution svg {
+        stroke: #e6a800;
+      }
+      .callout-caution .callout-title {
+        color: var(--amber-700);
+      }
+      .callout-caution .callout-body p {
+        color: #704a10;
+      }
+      .callout-important {
+        background: #f3edfd;
+        border-left: 3px solid #7b5ccc;
+      }
+      .callout-important svg {
+        stroke: #7b5ccc;
+      }
+      .callout-important .callout-title {
+        color: #5b34a0;
+      }
+      .callout-important .callout-body p {
+        color: #5b34a0;
+      }
+      /* COLLAPSIBLE EXAMPLES */
+      details.example {
+        background: var(--slate-50);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        margin: 1rem 0 1.5rem;
+        overflow: hidden;
+      }
+      details.example summary {
+        padding: 0.75rem 1rem;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        list-style: none;
+        user-select: none;
+        transition: background 0.15s;
+      }
+      details.example summary::-webkit-details-marker {
+        display: none;
+      }
+      details.example summary:hover {
+        background: var(--slate-100);
+      }
+      details.example summary::before {
+        content: "";
+        display: inline-block;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 6px solid var(--text-muted);
+        transition: transform 0.2s;
+        flex-shrink: 0;
+      }
+      details.example[open] summary::before {
+        transform: rotate(180deg);
+      }
+      details.example .example-body {
+        border-top: 1px solid var(--border);
+      }
+      /* CODE */
+      .code-block {
+        position: relative;
+        background: #1a2233;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 0.75rem 0 1.5rem;
+      }
+      .code-lang {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #141d2e;
+        padding: 8px 16px;
+        font-size: 0.7rem;
+        font-family: "JetBrains Mono", monospace;
+        color: #b6cce6;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .copy-btn {
+        background: none;
+        border: 1px solid #2a3a52;
+        color: #6b8cae;
+        font-size: 0.7rem;
+        padding: 3px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: "JetBrains Mono", monospace;
+        transition: all 0.15s;
+      }
+      .copy-btn:hover {
+        border-color: #4a9ce8;
+        color: #4a9ce8;
+      }
+      .copy-btn.copied {
+        color: #5dcb95;
+        border-color: #5dcb95;
+      }
+      .code-block pre {
+        padding: 1.25rem 1.5rem;
+        overflow-x: auto;
+        margin: 0;
+        background: transparent;
+      }
+      .code-block pre code {
+        display: block;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.82rem;
+        line-height: 1.7;
+        color: #e2eaf8;
+        background: transparent;
+        border: none;
+        padding: 0;
+        border-radius: 0;
+        white-space: pre;
+        overflow-wrap: normal;
+      }
+      code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.82em;
+        background: var(--slate-100);
+        border: 1px solid var(--border);
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: var(--slate-800);
+      }
+      /* TABLE */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0 1.5rem;
+        font-size: 0.875rem;
+      }
+      th {
+        background: var(--slate-100);
+        color: var(--text-secondary);
+        font-weight: 600;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        padding: 10px 14px;
+        text-align: left;
+        border-bottom: 2px solid var(--border);
+      }
+      td {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text-secondary);
+        vertical-align: top;
+      }
+      tr:last-child td {
+        border-bottom: 0;
+      }
+      tbody tr:hover td {
+        background: var(--slate-50);
+      }
+      /* METHOD */
+      .method-badge {
+        display: inline-block;
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 5px;
+        margin-right: 8px;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .method-post {
+        background: var(--green-50);
+        color: var(--green-700);
+      }
+      .endpoint-line {
+        display: flex;
+        align-items: center;
+        background: var(--slate-100);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 14px;
+        margin: 0.75rem 0 1.25rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.85rem;
+        color: var(--slate-800);
+      }
+      /* SECTION */
+      .section-anchor {
+        display: block;
+        position: relative;
+        top: -80px;
+        visibility: hidden;
+      }
+      /* STEP FLOW */
+      .flow-steps {
+        counter-reset: step;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin: 1.5rem 0;
+      }
+      .flow-step {
+        display: flex;
+        gap: 1rem;
+        position: relative;
+        padding-bottom: 1.5rem;
+      }
+      .flow-step:last-child {
+        padding-bottom: 0;
+      }
+      .flow-step::before {
+        content: "";
+        position: absolute;
+        left: 15px;
+        top: 32px;
+        bottom: 0;
+        width: 2px;
+        background: var(--border);
+      }
+      .flow-step:last-child::before {
+        display: none;
+      }
+      .step-num {
+        counter-increment: step;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--blue-500);
+        color: var(--white);
+        font-size: 0.8rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        z-index: 1;
+      }
+      .step-body {
+        flex: 1;
+        padding-top: 4px;
+      }
+      .step-body strong {
+        display: block;
+        font-size: 0.95rem;
+        margin-bottom: 0.25rem;
+      }
+      .step-body p {
+        font-size: 0.875rem;
+        margin: 0;
+      }
+      /* TERM / GLOSSARY */
+      .glossary-term {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .glossary-term:last-child {
+        border-bottom: 0;
+      }
+      .glossary-term dt {
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+        margin-bottom: 0.3rem;
+      }
+      .glossary-term dd {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        line-height: 1.65;
+        margin-left: 0;
+      }
+      /* INLINE HIGHLIGHT BOX */
+      .info-box {
+        background: var(--slate-50);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.25rem 1.5rem;
+        margin: 1.25rem 0;
+      }
+      .info-box h4 {
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+      }
+      /* SCENARIO */
+      .scenario {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 1rem 0 1.5rem;
+      }
+      .scenario-header {
+        background: var(--slate-100);
+        padding: 0.6rem 1rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        border-bottom: 1px solid var(--border);
+      }
+      .scenario-body {
+        padding: 1rem 1.25rem;
+      }
+      .chat-line {
+        display: flex;
+        gap: 8px;
+        font-size: 0.875rem;
+        margin-bottom: 0.75rem;
+        align-items: flex-start;
+      }
+      .chat-line:last-child {
+        margin-bottom: 0;
+      }
+      .chat-who {
+        font-weight: 700;
+        min-width: 60px;
+        color: var(--text-primary);
+        font-size: 0.8rem;
+        padding-top: 2px;
+      }
+      .chat-who.agent {
+        color: var(--blue-600);
+      }
+      .chat-text {
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+      @media (max-width: 768px) {
+        .page-wrap {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          display: none;
+        }
+        .content {
+          padding: 2rem 1.25rem;
+        }
+        .doc-title {
+          font-size: 1.7rem;
+        }
+      }
+    
+      .content { width:100%; }
+      .case-lead {font-size:1.05rem;line-height:1.8;}
+      .quick-links {display:flex;flex-wrap:wrap;gap:.75rem;margin:1rem 0 1.75rem;}
+      .quick-links a {display:inline-block;text-decoration:none;border:1px solid var(--blue-200);border-radius:8px;padding:9px 13px;color:var(--blue-700);font-size:.85rem;font-weight:600;}
+      .quick-links a:hover {background:var(--blue-50);}
+      .mini-flow {display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:1.25rem 0 1.6rem;}
+      .mini-flow span {border:1px solid var(--border);background:var(--slate-50);padding:.6rem .8rem;border-radius:8px;font-size:.82rem;}
+      .mini-flow b {color:var(--blue-600);font-weight:500;}
+      .mobile-contents {display:none;}
+      .result-table td:first-child{font-weight:600;}
+      @media(max-width:768px) {.mobile-contents{display:block;background:var(--slate-50);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-bottom:1.5rem;} .mobile-contents a{display:inline-block;margin:.3rem .6rem .3rem 0;color:var(--blue-700);font-size:.82rem;} .quick-links{flex-direction:column;align-items:flex-start;} }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+  <nav class="sidebar" aria-label="Case study contents">
+    <a href="index.html" class="sidebar-back">&#8592; Back to portfolio</a>
+    <div class="sidebar-section">DocFlow AI</div>
+          <a href="#overview">Overview</a>
+          <a href="#problem">Problem and Approach</a>
+          <a href="#workflow">Documentation Workflow</a>
+          <a href="#drift">Drift Detection</a>
+          <a href="#ai-review">AI Draft Review</a>
+          <a href="#evaluation">Quality Checks and Evaluation</a>
+          <a href="#pull-request">Pull Request Review</a>
+          <a href="#results">Results</a>
+          <a href="#limitations">Limitations</a>
+  </nav>
+  <main class="content">
+    <div class="doc-header">
+      <div class="doc-badge badge-case">Documentation Engineering Case Study</div>
+      <h1 class="doc-title">DocFlow AI: AI-Assisted Documentation Pipeline</h1>
+      <p class="doc-author">by <strong>Vyshnavi Gurram</strong>, Technical Writer</p>
+    </div>
+    <div class="mobile-contents"><strong>On this page</strong><div><a href="#overview">Overview</a> <a href="#problem">Problem and Approach</a> <a href="#workflow">Documentation Workflow</a> <a href="#drift">Drift Detection</a> <a href="#ai-review">AI Draft Review</a> <a href="#evaluation">Quality Checks and Evaluation</a> <a href="#pull-request">Pull Request Review</a> <a href="#results">Results</a> <a href="#limitations">Limitations</a></div></div>
+    <p class="case-lead">I built DocFlow AI to explore how documentation can be generated from an API specification, checked when the specification changes, and prepared for review with the help of an AI model. I wanted to understand not only what could be automated, but also where the technical writer would still need to verify the content.</p>
+
+    <span class="section-anchor" id="overview"></span><h2>Overview</h2>
+    <p>DocFlow AI is a proof-of-concept documentation workflow for FlowOps, a fictional automation platform. The sample API supports starting an automation job and checking its status. A separate Jira-style ticket proposes adding a job cancellation operation.</p>
+    <p>The project uses Python, Markdown, OpenAPI, GitHub Actions, and Groq with the <code>openai/gpt-oss-120b</code> model. I developed and tested the scripts using Google Colab.</p>
+    <div class="callout callout-note"><div class="callout-body"><div class="callout-title">Project scope</div><p>This is a personal project using fictional product requirements. It demonstrates a working process and the issues found during testing. It is not a production documentation platform.</p></div></div>
+
+    <span class="section-anchor" id="problem"></span><h2>Problem and Approach</h2>
+    <p>When an API changes, its documentation may no longer match the implementation. A manual update can be missed, especially when changes are made across multiple files. I wanted the repository to identify outdated documentation rather than rely only on someone remembering to update it.</p>
+    <p>I also wanted to test whether an AI model could prepare an initial document from a proposed feature ticket. The model could save drafting effort, but its content had to be checked against approved sources. I kept the generated drafts separate from published API documentation and required human review.</p>
+
+    <span class="section-anchor" id="workflow"></span><h2>Documentation Workflow</h2>
+    <div class="mini-flow"><span>OpenAPI specification</span><b>&rarr;</b><span>Python generator</span><b>&rarr;</b><span>Markdown API reference</span><b>&rarr;</b><span>GitHub Actions validation</span></div>
+    <p>The Python generator reads <code>spec/openapi.yaml</code> and writes <code>docs/generated-api.md</code>. The GitHub Actions workflow checks the OpenAPI specification, regenerates the Markdown reference, and compares the output with the committed file.</p>
+    <h3>Drafting from a proposed feature</h3>
+    <div class="mini-flow"><span>FLOW-101 ticket</span><b>+</b><span>OpenAPI</span><b>+</b><span>Drafting rules</span><b>&rarr;</b><span>Groq model</span><b>&rarr;</b><span>Review draft</span></div>
+    <p>The drafting script reads a simulated Jira ticket, the OpenAPI specification, and the drafting rules. It sends these sources to the model and saves a Markdown draft marked as requiring human review. The ticket proposes <code>POST /jobs/{jobId}/cancel</code>, which is not present in the current OpenAPI specification.</p>
+    <p>This distinction matters. A requirement describes what the team wants to build. The API specification describes the operations currently documented. A draft should not describe a proposed operation as something customers can already use.</p>
+
+    <span class="section-anchor" id="drift"></span><h2>Documentation Drift Detection</h2>
+    <h3>Test scenario</h3>
+    <p>I updated the description of <code>POST /jobs</code> in the OpenAPI file without updating the committed Markdown reference. I expected the validation workflow to fail because the documentation was outdated.</p>
+    <h3>Unexpected result</h3>
+    <p>The first validation run passed. After inspecting the repository in Colab, I found that <code>generated-api.md</code> had been committed at the repository root, while the generator wrote to <code>docs/generated-api.md</code>. The file in the <code>docs</code> folder was untracked, so the Git comparison did not identify its changes.</p>
+    <h3>Correction and verification</h3>
+    <p>I moved the committed Markdown file into the <code>docs</code> folder and reran the workflow. GitHub Actions then detected the changed description and failed at the drift check as expected. After updating the documentation to match the specification, the workflow passed.</p>
+    <div class="code-block"><div class="code-lang">GitHub Actions drift check</div><pre><code>git diff --exit-code -- docs/generated-api.md</code></pre></div>
+    <div class="callout callout-important"><div class="callout-body"><div class="callout-title">What I learned</div><p>A successful automated run does not necessarily mean a check is testing the correct file or condition. I needed to create a deliberate mismatch, inspect the output, and verify that the check failed for the expected reason.</p></div></div>
+
+    <span class="section-anchor" id="ai-review"></span><h2>Reviewing the AI-Generated Draft</h2>
+    <p>For the AI test, I used FLOW-101, a proposed job cancellation feature. The model correctly identified the endpoint as proposed, but the first draft also introduced details that were not supported by the ticket or OpenAPI specification.</p>
+    <div class="scenario"><div class="scenario-header">Example of an unsupported response</div><div class="scenario-body"><p>The ticket proposed HTTP 202 for an accepted cancellation request but did not define a JSON response body. The first draft included the following example:</p><div class="code-block"><div class="code-lang">Unverified response generated by the model</div><pre><code>{
+  "message": "Cancellation request accepted"
+}</code></pre></div><p>This response looked reasonable, but the source documents did not confirm the field or message. It was not suitable for approved API documentation.</p></div></div>
+    <p>The initial draft also added an authentication header and an empty JSON request body. I revised the drafting rules and generated another draft. Those examples were removed, but unsupported statements about cancellation behavior remained. In a later draft, the model generated an illustrative <code>curl</code> command for the proposed endpoint.</p>
+    <p>I stopped revising only the drafting instructions and introduced a Python quality checker. The test showed that more instructions did not always produce a more accurate document.</p>
+
+    <span class="section-anchor" id="evaluation"></span><h2>Quality Checks and Evaluation</h2>
+    <p>The <code>scripts/check_draft.py</code> checker looks for selected problems we had already identified during human review. These include executable examples for an unverified endpoint, specified statements about unverified behavior, and punctuation that does not follow the project rules.</p>
+    <p>The checker initially detected three findings in the third draft. It missed the en dash characters because the original punctuation check looked only for em dashes. I updated the checker to recognise both, and the same draft then returned four findings with exit code <code>1</code>.</p>
+    <table class="result-table"><thead><tr><th>Evaluation</th><th>Expected result</th><th>Observed result</th></tr></thead><tbody>
+      <tr><td>Known problematic draft</td><td>Reject</td><td>Rejected by the configured checks</td></tr>
+      <tr><td>Clean test fixture</td><td>Accept</td><td>Accepted by the configured checks</td></tr>
+      <tr><td>GitHub Actions evaluation workflow</td><td>Pass when both tests behave as expected</td><td>Passed in the tested run</td></tr>
+    </tbody></table>
+    <p>These results show that the checker identifies the known patterns used in our evaluation samples. They do not prove that every statement in an AI-generated document is technically accurate. Human verification is still required.</p>
+
+    <span class="section-anchor" id="pull-request"></span><h2>Pull Request Review</h2>
+    <p>I created a separate Git branch to add a documentation review checklist. The change was submitted through a GitHub pull request, where the automated checks passed. I reviewed the proposed file, recorded a self-review comment, and merged the pull request into <code>main</code>.</p>
+    <p>The checklist covers source verification, content quality, technical validation, AI draft review, and publication approval. This was a personal repository demonstration. It did not include an independent reviewer or enforced branch protection.</p>
+
+    <span class="section-anchor" id="results"></span><h2>Results</h2>
+    <p>By the end of the tested workflow, I had a Python-based API documentation generator, OpenAPI validation, a working drift check, an AI drafting script, automated checks for selected draft issues, and a GitHub Actions evaluation with positive and negative test fixtures.</p>
+    <p>The most useful outcome was understanding where automation needed another level of verification. A script can run successfully while checking the wrong file. An AI model can label a feature as proposed and still add details that are not in the source. Both situations require a way to inspect and test the output.</p>
+
+    <span class="section-anchor" id="limitations"></span><h2>Limitations</h2>
+    <p>The workflow uses a fixed sample ticket and a fictional API. The documentation generator supports the structures used in this example, rather than all possible OpenAPI definitions. The draft checker uses a limited set of patterns and cannot identify every unsupported technical statement.</p>
+    <p>The project does not automatically create pull requests for AI-generated changes, enforce independent approvals, or publish a full documentation site. Those are possible future improvements, but they are not part of the tested implementation described here.</p>
+
+    <p class="project-source">The scripts, OpenAPI specification, test fixtures, and documentation are available in the <a href="https://github.com/vyshnavigu/docflow-ai" target="_blank" rel="noopener noreferrer">DocFlow AI source repository</a>.</p>
+  </main>
+</div>
+</body>
+</html>
