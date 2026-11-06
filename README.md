@@ -90,4 +90,7 @@ HTML, CSS, Markdown, GitHub, GitHub Actions, Python, OpenAPI, Swagger, documenta
 - [Portfolio website](https://vyshnavi-gurram-technical-writer.vercel.app/)
 - [GitHub profile](https://github.com/vyshnavigu)
 
-© 2026 Vyshnavi Gurram
+
+---
+
+© 2026 Vyshnavi Gurram. All rights reserved.
