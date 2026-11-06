@@ -23,16 +23,32 @@ Some samples use fictional applications, endpoints, or scenarios to demonstrate 
 
 The main portfolio groups samples by **document type** so visitors can go directly to the kind of writing they want to review. Each sample opens as a separate HTML page.
 
-```text
-index.html                              Portfolio homepage and sample categories
-mfa-api.html                            API documentation sample
-eda-guide.html                          Conceptual guide
-deployment-guide.html                  Application deployment guide
-docflow-ai-case-study.html             Documentation engineering case study
-jira-case-study.html                   RAG agent case study
-session_navigator_ux_case_study.html   UX writing case study
-README.md                               Repository overview
-```
+
+Vyshnavi-Gurram-Technical-Writer/
+│
+├── index.html
+│   └── Portfolio homepage and sample categories
+│
+├── mfa-api.html
+│   └── API documentation sample
+│
+├── eda-guide.html
+│   └── Event-Driven Architecture conceptual guide
+│
+├── deployment-guide.html
+│   └── Application server deployment guide
+│
+├── docflow-ai-case-study.html
+│   └── Documentation engineering case study
+│
+├── jira-case-study.html
+│   └── RAG agent case study
+│
+├── session_navigator_ux_case_study.html
+│   └── UX writing and content design case study
+│
+└── README.md
+    └── Repository overview and portfolio information
 
 All listed HTML files are located in the repository root.
 
