@@ -23,7 +23,9 @@ Some samples use fictional applications, endpoints, or scenarios to demonstrate 
 
 The main portfolio groups samples by **document type** so visitors can go directly to the kind of writing they want to review. Each sample opens as a separate HTML page.
 
+### Repository Structure
 
+```text
 Vyshnavi-Gurram-Technical-Writer/
 │
 ├── index.html
@@ -49,6 +51,7 @@ Vyshnavi-Gurram-Technical-Writer/
 │
 └── README.md
     └── Repository overview and portfolio information
+```
 
 All listed HTML files are located in the repository root.
 
