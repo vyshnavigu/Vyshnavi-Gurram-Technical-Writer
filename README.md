@@ -15,15 +15,16 @@ The portfolio website is built with HTML and CSS, maintained in GitHub, and host
 | [Implementation guide](deployment-guide.html) | Application Server Deployment Guide: WildFly and Maven on Linux | System administrators and deployment teams |
 | [Documentation engineering case study](docflow-ai-case-study.html) | DocFlow AI: a personal proof of concept for OpenAPI-driven documentation generation, validation, and AI-assisted drafting review | Documentation teams, developers, and hiring managers |
 | [RAG agent case study](jira-case-study.html) | Jira Summarizer with Microsoft Copilot RAG: Agent Alpha | Documentation teams and people exploring AI-assisted knowledge retrieval |
-| [UX writing case study](session_navigator_ux_case_study.html) | Designing a Session Navigator for AI Chat Interfaces | Product designers, UX writers, and product teams |
+| [UX writing case study: Session Navigator](session_navigator_ux_case_study.html) | Designing a Session Navigator for AI Chat Interfaces | Product designers, UX writers, and product teams |
+| [UX writing case study: Email typo](ux-writing-email-typo-case-study.html) | Helping users catch email typos before login verification: an observed ChatGPT login flow, proposed microcopy, and an improved interaction | UX writers, product designers, and product and engineering teams |
 
-Some samples use fictional applications, endpoints, or scenarios to demonstrate documentation methods. Case studies describe hands-on experiments and design work; they are not claims of production deployment.
+Some samples use fictional applications, endpoints, or scenarios to demonstrate documentation methods. Case studies describe hands-on experiments, observed issues, and proposed design improvements; they are not claims of production deployment or implemented product changes. The email-typo case study uses anonymized screenshots.
 
 ## How this portfolio is organized
 
 The main portfolio groups samples by **document type** so visitors can go directly to the kind of writing they want to review. Each sample opens as a separate HTML page.
 
-### Repository Structure
+### Repository structure
 
 ```text
 Vyshnavi-Gurram-Technical-Writer/
@@ -47,7 +48,10 @@ Vyshnavi-Gurram-Technical-Writer/
 │   └── RAG agent case study
 │
 ├── session_navigator_ux_case_study.html
-│   └── UX writing and content design case study
+│   └── Session Navigator UX writing case study
+│
+├── ux-writing-email-typo-case-study.html
+│   └── Email typo in login flow UX writing case study
 │
 └── README.md
     └── Repository overview and portfolio information
@@ -63,6 +67,7 @@ The documentation pages use a consistent visual approach, including a contents s
 - **Choose the right document type.** Use an API reference for integration details, a conceptual guide for explanation, and a procedure for a task the reader must perform.
 - **Use examples to clarify.** Provide scenarios, code, diagrams, or troubleshooting notes when they improve understanding.
 - **Review technical claims.** Distinguish validated behaviour from assumptions and proposed functionality.
+- **Make UX copy actionable.** Identify where a user may become confused, propose clear messages, and explain the next action without implying that a suggested change has been implemented.
 - **Maintain source history.** Use GitHub to track changes to portfolio pages and project material.
 
 ## DocFlow AI: source repository
@@ -71,7 +76,7 @@ The [DocFlow AI repository](https://github.com/vyshnavigu/docflow-ai) contains t
 
 The documented workflow covers generating API documentation from an OpenAPI specification, checking for drift, reviewing an AI-generated draft against a proposed change ticket, and testing draft checks using known-bad and clean examples.
 
-**Scope:** DocFlow AI is a personal learning project. The AI draft was not approved for publication, and the project does not autonomously open pull requests or publish reviewed documentation. The automated checks in this repository should not be mistaken for a complete independent editorial review.
+**Scope:** DocFlow AI is a personal learning project. The AI draft was not approved for publication, and the project does not autonomously open pull requests or publish reviewed documentation. Passing automated checks should not be mistaken for a complete independent editorial review.
 
 Read the [portfolio case study](docflow-ai-case-study.html) for the problem, process, findings, and limitations.
 
@@ -83,13 +88,12 @@ The public site is hosted on [Vercel](https://vercel.com/). Changes to the websi
 
 ## Tools and technologies represented
 
-HTML, CSS, Markdown, GitHub, GitHub Actions, Python, OpenAPI, Swagger, documentation validation, Microsoft Copilot, and retrieval-augmented generation (RAG).
+HTML, CSS, Markdown, GitHub, GitHub Actions, Python, OpenAPI, Swagger, documentation validation, Microsoft Copilot, retrieval-augmented generation (RAG), and UX writing.
 
 ## Contact
 
 - [Portfolio website](https://vyshnavi-gurram-technical-writer.vercel.app/)
 - [GitHub profile](https://github.com/vyshnavigu)
-
 
 ---
 
