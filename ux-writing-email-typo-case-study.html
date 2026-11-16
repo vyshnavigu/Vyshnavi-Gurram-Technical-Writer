@@ -650,6 +650,8 @@
 <a href="#impact">Why This Matters</a>
 <a href="#flow">Suggested Flow</a>
 <a href="#copy">Suggested UX Copy</a>
+<a href="#follow-up">Follow-up Observation</a>
+<a href="#account-intent">Account Recognition &amp; Copy</a>
 <a href="#report">Issue Report</a>
 <a href="#principles">Writing Principles</a>
 <a href="#reflection">Reflection</a>
@@ -658,7 +660,9 @@
 <div class="doc-header"><div class="doc-badge badge-ux">UX Writing Case Study</div>
 <h1 class="doc-title">Helping Users Catch Email Typos Before Login Verification</h1>
 <p class="doc-author">by <strong>Vyshnavi Gurram</strong>, Technical Writer / UX Writer</p></div>
-<div class="mobile-contents"><strong>On this page</strong><div><a href="#summary">Case Summary</a> <a href="#evidence">Evidence from the Flow</a> <a href="#steps">Steps to Reproduce</a> <a href="#observed">Observed vs. Expected</a> <a href="#issue">UX Writing Issue</a> <a href="#impact">Why This Matters</a> <a href="#flow">Suggested Flow</a> <a href="#copy">Suggested UX Copy</a> <a href="#report">Issue Report</a> <a href="#principles">Writing Principles</a> <a href="#reflection">Reflection</a></div></div>
+<div class="mobile-contents"><strong>On this page</strong><div><a href="#summary">Case Summary</a> <a href="#evidence">Evidence from the Flow</a> <a href="#steps">Steps to Reproduce</a> <a href="#observed">Observed vs. Expected</a> <a href="#issue">UX Writing Issue</a> <a href="#impact">Why This Matters</a> <a href="#flow">Suggested Flow</a> <a href="#copy">Suggested UX Copy</a> <a href="#follow-up">Follow-up Observation</a>
+<a href="#account-intent">Account Recognition &amp; Copy</a>
+<a href="#report">Issue Report</a> <a href="#principles">Writing Principles</a> <a href="#reflection">Reflection</a></div></div>
 <p class="case-lead">This case study reviews a login flow on ChatGPT.com. A typo in the email domain was accepted, and the flow moved to a verification screen that said a code had been sent to the entered address. I reviewed the flow to identify where clearer messages could help the user correct the email before continuing.</p>
 <span class="section-anchor" id="summary"></span><h2>Case Summary</h2>
 <table><tbody><tr><th>Product area</th><td>ChatGPT.com login</td></tr>
@@ -704,6 +708,34 @@
 </tbody></table></div>
 <h3>Alternative when the domain check cannot verify the address</h3>
 <div class="proposed-copy">We could not verify this email domain. Check the spelling or try another sign-in method.</div>
+<span class="section-anchor" id="follow-up"></span><h2>Follow-up Observation: Updated Verification Message</h2>
+<p><strong>Reviewed: November 16, 2026</strong></p>
+<p>When I reviewed the account creation flow again, I noticed that the verification screen used more specific wording than in the original recording:</p>
+<div class="info-box"><h3 style="margin-top:0">Check your inbox</h3><p>Enter the verification code we just sent to <code>sample.user@gmailc.om</code> to create your account.</p></div>
+<p>The message now explains why the verification code is needed. This is an improvement in context, but it still displays the likely mistyped domain. In this observation, the flow advanced to the verification screen without a spelling suggestion.</p>
+<p>The example address is fictionalized for this portfolio. I did not confirm whether a verification email was delivered or inspect how the service checks registered accounts.</p>
+<h3>What remains unresolved</h3>
+<ul>
+<li><strong>Typo recovery:</strong> Showing the entered address does not necessarily help the user recognize a likely domain typo. They may continue waiting for a code rather than correcting the address.</li>
+<li><strong>Account intent:</strong> The phrase <em>to create your account</em> may confuse someone who selected login intending to access an existing account.</li>
+</ul>
+<span class="section-anchor" id="account-intent"></span><h2>Account Recognition and Verification Copy</h2>
+<p>People use both common email providers and legitimate organizational domains, such as <code>@rtl.ca</code>. An unfamiliar domain is not necessarily an error. A rigid allowlist of common providers could block valid addresses.</p>
+<p>A second consideration is the user's intended task. Someone trying to sign in with an existing address might mistype the domain and reach a screen that asks them to create an account. The interface should avoid assuming account-creation intent before that state is established.</p>
+<h3>Recommended approach</h3>
+<ol>
+<li><strong>Suggest, do not automatically replace.</strong> When a domain closely resembles a known provider, offer a spelling suggestion while allowing the person to keep their entered email.</li>
+<li><strong>Make correction easy.</strong> Provide a visible <strong>Edit email</strong> action on the verification screen.</li>
+<li><strong>Use neutral verification copy when appropriate.</strong> If the experience handles both sign-in and registration, avoid saying the person is creating an account before that intent is confirmed.</li>
+<li><strong>Protect account privacy.</strong> Do not reveal whether a specific email address is registered merely to diagnose a possible typo. Account recognition should follow the product's secure authentication design.</li>
+</ol>
+<h3>Suggested messages</h3>
+<table><thead><tr><th>Moment</th><th>Suggested UX copy</th></tr></thead><tbody>
+<tr><td>Possible domain typo</td><td>This email address might contain a typo. Check the spelling before continuing.</td></tr>
+<tr><td>Correction suggestion</td><td>Did you mean <code>sample.user@gmail.com</code>? <strong>Use suggested email</strong> / <strong>Keep entered email</strong></td></tr>
+<tr><td>Verification screen</td><td><strong>Check your inbox</strong><br/>Enter the verification code sent to <code>sample.user@gmailc.om</code> to continue. <strong>Edit email</strong></td></tr>
+</tbody></table>
+<div class="callout callout-note"><div class="callout-body"><div class="callout-title">Design scope</div><p>These are proposed copy and interaction improvements, not features I implemented or evidence of how ChatGPT handles account lookup internally. The wording should be tested against the actual authentication flows and accessibility requirements.</p></div></div>
 <span class="section-anchor" id="report"></span><h2>Issue Report Version</h2>
 <p>This is the concise issue summary I would send to a product, UX, or engineering team.</p>
 <table><tbody><tr><th>Title</th><td>Login accepts an email address with a typo in the domain and proceeds to verification.</td></tr>
@@ -720,4 +752,5 @@
 <span class="section-anchor" id="reflection"></span><h2>Reflection</h2>
 <p>A login error at the beginning of a user journey can prevent everything that follows. In this example, a short, timely message could help the user correct the address without waiting for a code that may not arrive.</p>
 <p>The proposed improvement combines UX writing with validation behavior. It would need implementation and usability testing before its effectiveness could be measured.</p>
+<p>The follow-up review also highlighted the importance of separating email spelling assistance from account recognition. Clearer verification copy helps, but it should support the person’s sign-in or registration task without guessing their account status.</p>
 </main></div></body></html>
